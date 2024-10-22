@@ -2,6 +2,7 @@ package mvp_delivery_system.services;
 
 
 import mvp_delivery_system.entites.Dish;
+import mvp_delivery_system.models.request.NewDishRequest;
 import mvp_delivery_system.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,13 @@ public class DishService {
         return obj.get();
     }
 
-    public Dish createDish(Dish dish) {
-        return dishRepository.save(dish);
+    public Dish createDish(NewDishRequest newDishRequest) {
+        Dish newDish = new Dish();
+        newDish.setName(newDishRequest.getName());
+        newDish.setDescription(newDishRequest.getDescription());
+        newDish.setPrice(newDishRequest.getPrice());
+        newDish.setImage(newDishRequest.getImage());
+        return dishRepository.save(newDish) ;
     }
 
     public Dish updateDish(Long id, Dish dishNovo) {

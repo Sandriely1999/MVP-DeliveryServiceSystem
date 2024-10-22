@@ -2,6 +2,8 @@ package mvp_delivery_system.controller;
 
 
 import mvp_delivery_system.entites.Dish;
+import mvp_delivery_system.models.request.NewDishRequest;
+import mvp_delivery_system.models.response.DishResponse;
 import mvp_delivery_system.services.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/dishes")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class DishController {
 
     @Autowired
@@ -30,9 +32,10 @@ public class DishController {
     }
 
     @PostMapping
-    public ResponseEntity<Dish> createDish(@RequestBody Dish dish) {
-        Dish objDish = dishService.createDish(dish);
-        return ResponseEntity.ok().body(objDish);
+    public ResponseEntity<DishResponse> createDish(@RequestBody NewDishRequest newDishRequest) {
+        Dish objDish = dishService.createDish(newDishRequest);
+        DishResponse dishResponse = new DishResponse(objDish);
+        return ResponseEntity.ok().body(dishResponse);
     }
 
     @PutMapping(value = "/{id}")

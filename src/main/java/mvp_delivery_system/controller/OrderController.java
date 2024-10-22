@@ -58,4 +58,10 @@ public class OrderController {
         return ResponseEntity.ok().body(orderResponse);
     }
 
+    @PutMapping(value = "/trocarStatusParaPronto")
+    public ResponseEntity<Order> trocarStatusParaPronto(@RequestBody Long id) {
+        Order statusOrder = orderService.trocarStatusPedidoParaPronto(id);
+        return ResponseEntity.ok().body(statusOrder);
+    }
+
 }

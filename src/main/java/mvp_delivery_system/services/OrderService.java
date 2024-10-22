@@ -105,4 +105,13 @@ public class OrderService {
         return savedOrder;
 
     }
+
+
+    public Order trocarStatusPedidoParaPronto (Long idOrder) {
+
+        Order order = findOrderById(idOrder);
+        order.setOrderstatus(OrderStatus.PRONTO);
+
+        return orderRepository.save(order);
+    }
 }
