@@ -5,6 +5,7 @@ import mvp_delivery_system.entites.Order;
 import mvp_delivery_system.entites.OrderItem;
 import mvp_delivery_system.entites.User;
 import mvp_delivery_system.enums.OrderStatus;
+import mvp_delivery_system.enums.Pagamentos;
 import mvp_delivery_system.models.request.NewOrderItemRequest;
 import mvp_delivery_system.models.request.NewOrderRequest;
 import mvp_delivery_system.repositories.OrderRepository;
@@ -61,6 +62,9 @@ public class OrderService {
     //////////////////////////////////////////
 
 
+
+
+
     public Order createNewOrder(NewOrderRequest newOrderRequest) {
 
         Order order = new Order();
@@ -87,12 +91,11 @@ public class OrderService {
 
         order.setOrderItems(orderItems);
 
-
         order.setOrderstatus(OrderStatus.PREPARANDO);
         order.setTotalPrice(orderItemService.calculateTotalPrice(orderItems));
         order.setDataHora(LocalDateTime.now());
 
-
+        order.setPagamento(newOrderRequest.getPagamento());
 
         Order savedOrder = orderRepository.save(order);
 
@@ -114,4 +117,21 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
+
+    public Order trocarStatusPedidoParaEnviando (Long idOrder)
+    {
+        Order order = findOrderById(idOrder);
+        order.setOrderstatus(OrderStatus.ENVIANDO);
+
+        
+        return orderRepository.save(order);
+    }
+
+    public Order pedidoRecebido(Long idOrder) {
+        Order order = findOrderById(idOrder);
+        order.setOrderstatus(OrderStatus.ENTREGUE);
+
+        return orderRepository.save(order);
+    }
+
 }

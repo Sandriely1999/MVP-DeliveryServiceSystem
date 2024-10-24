@@ -22,27 +22,31 @@ public class OrderController {
     private OrderItemService orderItemService;
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAllOrders() {
-        List<Order> list = orderService.findAllOrders();
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<List<OrderResponse>> findAllOrders() {
+        List<Order> listOrder = orderService.findAllOrders();
+        List<OrderResponse> orderResponse = OrderResponse.listaOrderParaOrderResponse(listOrder);
+        return ResponseEntity.ok().body(orderResponse);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findOrderById(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> findOrderById(@PathVariable Long id) {
         Order obj = orderService.findOrderById(id);
-        return ResponseEntity.ok().body(obj);
+        OrderResponse orderResponse = new OrderResponse(obj);
+        return ResponseEntity.ok().body(orderResponse);
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody Order order) {
         Order newOrder = orderService.saveOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
+        OrderResponse orderResponse = new OrderResponse(newOrder);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
         Order updateOrder = orderService.updateOrder(id, orderDetails);
-        return ResponseEntity.ok().body(updateOrder);
+        OrderResponse orderResponse = new OrderResponse(updateOrder);
+        return ResponseEntity.ok().body(orderResponse);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -59,9 +63,25 @@ public class OrderController {
     }
 
     @PutMapping(value = "/trocarStatusParaPronto")
-    public ResponseEntity<Order> trocarStatusParaPronto(@RequestBody Long id) {
+    public ResponseEntity<OrderResponse> trocarStatusParaPronto(@RequestBody Long id) {
         Order statusOrder = orderService.trocarStatusPedidoParaPronto(id);
-        return ResponseEntity.ok().body(statusOrder);
+        OrderResponse orderResponse = new OrderResponse(statusOrder);
+        return ResponseEntity.ok().body(orderResponse);
     }
+    @PutMapping(value = "/trocarStatusParaEnviando")
+    public ResponseEntity<OrderResponse> trocarStatusParaEnviando(@RequestBody Long id) {
+        Order statusOrder = orderService.trocarStatusPedidoParaEnviando(id);
+        OrderResponse orderResponse = new OrderResponse(statusOrder);
+        return ResponseEntity.ok().body(orderResponse);
+
+
+    }
+    @PutMapping(value= "/pedidoEntregue")
+    public ResponseEntity<OrderResponse> pedidoEntregue(@RequestBody Long id) {
+        Order statusOrder =  orderService.pedidoRecebido(id);
+        OrderResponse orderResponse = new OrderResponse(statusOrder);
+        return ResponseEntity.ok().body(orderResponse);
+    }
+
 
 }

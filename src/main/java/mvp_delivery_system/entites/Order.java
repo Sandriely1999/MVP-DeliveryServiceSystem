@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import mvp_delivery_system.enums.OrderStatus;
+import mvp_delivery_system.enums.Pagamentos;
 
 
 import java.time.LocalDateTime;
@@ -33,6 +34,9 @@ public class Order {
     private List<OrderItem> orderItems;
 
     private Double totalPrice;
+
+
+    private Pagamentos pagamento;
 
 
 }
