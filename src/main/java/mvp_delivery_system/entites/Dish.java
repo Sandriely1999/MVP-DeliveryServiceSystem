@@ -18,6 +18,7 @@ public class Dish {
     private String description;
     private Double price;
     private String image;
+    private Boolean availability;
 
     @OneToMany(mappedBy = "dish")
     private List<OrderItem> orderItem;

@@ -1,6 +1,7 @@
 package mvp_delivery_system.controller;
 
 import mvp_delivery_system.entites.Order;
+import mvp_delivery_system.enums.OrderStatus;
 import mvp_delivery_system.models.request.NewOrderRequest;
 import mvp_delivery_system.models.response.OrderResponse;
 import mvp_delivery_system.services.OrderItemService;
@@ -62,25 +63,37 @@ public class OrderController {
         return ResponseEntity.ok().body(orderResponse);
     }
 
-    @PutMapping(value = "/trocarStatusParaPronto")
-    public ResponseEntity<OrderResponse> trocarStatusParaPronto(@RequestBody Long id) {
+    @PutMapping(value = "/trocarStatusParaPronto/{id}")
+    public ResponseEntity<OrderResponse> trocarStatusParaPronto(@PathVariable Long id) {
         Order statusOrder = orderService.trocarStatusPedidoParaPronto(id);
         OrderResponse orderResponse = new OrderResponse(statusOrder);
         return ResponseEntity.ok().body(orderResponse);
     }
-    @PutMapping(value = "/trocarStatusParaEnviando")
-    public ResponseEntity<OrderResponse> trocarStatusParaEnviando(@RequestBody Long id) {
+    @PutMapping(value = "/trocarStatusParaEnviando/{id}")
+    public ResponseEntity<OrderResponse> trocarStatusParaEnviando(@PathVariable Long id) {
         Order statusOrder = orderService.trocarStatusPedidoParaEnviando(id);
         OrderResponse orderResponse = new OrderResponse(statusOrder);
         return ResponseEntity.ok().body(orderResponse);
 
 
     }
-    @PutMapping(value= "/pedidoEntregue")
-    public ResponseEntity<OrderResponse> pedidoEntregue(@RequestBody Long id) {
+    @PutMapping(value= "/pedidoEntregue/{id}")
+    public ResponseEntity<OrderResponse> pedidoEntregue(@PathVariable Long id) {
         Order statusOrder =  orderService.pedidoRecebido(id);
         OrderResponse orderResponse = new OrderResponse(statusOrder);
         return ResponseEntity.ok().body(orderResponse);
+    }
+
+    @GetMapping(value= "/listaPedidosPreparando")
+    public ResponseEntity<List<OrderResponse>> listaPedidosPreparando() {
+        List<OrderResponse> orderResponses = orderService.listaPedidoPorStatus(OrderStatus.PREPARANDO);
+        return ResponseEntity.ok().body(orderResponses);
+    }
+
+    @GetMapping(value = "/listaPedidosPronto")
+    public ResponseEntity<List<OrderResponse>> listaPedidosPronto() {
+        List<OrderResponse> orderResponses = orderService.listaPedidoPorStatus(OrderStatus.PRONTO);
+        return ResponseEntity.ok().body(orderResponses);
     }
 
 

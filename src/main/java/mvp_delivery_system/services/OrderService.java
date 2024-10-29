@@ -5,9 +5,9 @@ import mvp_delivery_system.entites.Order;
 import mvp_delivery_system.entites.OrderItem;
 import mvp_delivery_system.entites.User;
 import mvp_delivery_system.enums.OrderStatus;
-import mvp_delivery_system.enums.Pagamentos;
 import mvp_delivery_system.models.request.NewOrderItemRequest;
 import mvp_delivery_system.models.request.NewOrderRequest;
+import mvp_delivery_system.models.response.OrderResponse;
 import mvp_delivery_system.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +83,7 @@ public class OrderService {
 
         for (NewOrderItemRequest orderItemRequest : newOrderRequest.getOrderItems()) {
 
-           OrderItem orderItem =  orderItemService.adicionarProdutoAoCarrinho(orderItemRequest.getProductId(), orderItemRequest.getQuantity() );
+           OrderItem orderItem =  orderItemService.adicionarProdutoAoCarrinho(orderItemRequest.getDishId(), orderItemRequest.getQuantity() );
 
            orderItems.add(orderItem);
 
@@ -134,4 +134,16 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    public List<OrderResponse> listaPedidoPorStatus(OrderStatus orderStatus) {
+
+        List<Order> orders = orderRepository.findByOrderstatus(orderStatus);
+
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getOrderstatus() == orderStatus) {
+                orderResponses.add(new OrderResponse(order));
+            }
+        }
+        return orderResponses;
+    }
 }

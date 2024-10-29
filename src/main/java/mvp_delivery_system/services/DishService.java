@@ -3,10 +3,12 @@ package mvp_delivery_system.services;
 
 import mvp_delivery_system.entites.Dish;
 import mvp_delivery_system.models.request.NewDishRequest;
+import mvp_delivery_system.models.response.DishResponse;
 import mvp_delivery_system.repositories.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ public class DishService {
 
     public Dish findDishById(Long id) {
         Optional<Dish> obj = dishRepository.findById(id);
+
         return obj.get();
     }
 
@@ -35,6 +38,8 @@ public class DishService {
         newDish.setDescription(newDishRequest.getDescription());
         newDish.setPrice(newDishRequest.getPrice());
         newDish.setImage(newDishRequest.getImage());
+
+        newDish.setAvailability(true);
         return dishRepository.save(newDish) ;
     }
 
@@ -48,6 +53,24 @@ public class DishService {
 
     public void deleteDish(Long id) {
         dishRepository.deleteById(id);
+    }
+
+
+    public void dishDeleteAvailability (Long id) {
+        Dish dish = findDishById(id);
+
+        dish.setAvailability(false);
+
+        dishRepository.save(dish);
+
+    }
+
+    public List<DishResponse> getAllValidDishes () {
+        List<Dish> dishes = dishRepository.findAllByAvailability(true);
+
+        List<DishResponse> dishResponse = DishResponse.listDishParaListResponse(dishes);
+
+        return dishResponse;
     }
     
 }

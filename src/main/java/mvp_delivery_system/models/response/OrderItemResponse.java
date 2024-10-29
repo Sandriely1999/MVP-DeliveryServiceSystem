@@ -15,14 +15,14 @@ import java.util.List;
 public class OrderItemResponse {
     private Long idOrdemItem;
     private Integer quantity;
-    private Dish dish;
-    private Order order;
+    private DishResponse dishResponse;
+    private OrderResponse orderResponse;
 
     public OrderItemResponse(OrderItem orderItem) {
         this.idOrdemItem = orderItem.getId();
         this.quantity = orderItem.getQuantity();
-        this.dish = orderItem.getDish();
-        this.order = orderItem.getOrder();
+        this.dishResponse = new DishResponse(orderItem.getDish());
+        this.orderResponse = new OrderResponse(orderItem.getOrder());
     }
 
     public static List<OrderItemResponse> listOrderItemParaListResponse (List<OrderItem> listOrderItem) {

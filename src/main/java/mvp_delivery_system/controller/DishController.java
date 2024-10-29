@@ -4,11 +4,13 @@ package mvp_delivery_system.controller;
 import mvp_delivery_system.entites.Dish;
 import mvp_delivery_system.models.request.NewDishRequest;
 import mvp_delivery_system.models.response.DishResponse;
+import mvp_delivery_system.repositories.DishRepository;
 import mvp_delivery_system.services.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,17 +20,21 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+    @Autowired
+    private DishRepository dishRepository;
 
     @GetMapping
-    public ResponseEntity<List<Dish>> findAllDishes() {
+    public ResponseEntity<List<DishResponse>> findAllDishes() {
         List<Dish> list = dishService.findAllDishes();
-        return ResponseEntity.ok().body(list);
+        List<DishResponse> dishResponseList = DishResponse.listDishParaListResponse(list);
+        return ResponseEntity.ok().body(dishResponseList);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Dish> findDishById(@PathVariable Long id) {
+    public ResponseEntity<DishResponse> findDishById(@PathVariable Long id) {
         Dish obj = dishService.findDishById(id);
-        return ResponseEntity.ok().body(obj);
+        DishResponse dishResponse = new DishResponse(obj);
+        return ResponseEntity.ok().body(dishResponse);
     }
 
     @PostMapping
@@ -39,16 +45,30 @@ public class DishController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Dish> updateDish(@PathVariable Long id, @RequestBody Dish dish) {
+    public ResponseEntity<DishResponse> updateDish(@PathVariable Long id, @RequestBody Dish dish) {
         Dish objDish = dishService.updateDish(id, dish);
-        return ResponseEntity.ok().body(objDish);
+        DishResponse dishResponse = new DishResponse(objDish);
+        return ResponseEntity.ok().body(dishResponse);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
+    public ResponseEntity deleteDish(@PathVariable Long id) {
         dishService.deleteDish(id);
         return ResponseEntity.noContent().build();
     }
-    
-    
+
+    @PutMapping(value= "/updateAvailabilityOfDish/{id}")
+    public ResponseEntity updateAvailabilityOfDish(@PathVariable Long id) {
+        Dish objDish = dishService.findDishById(id);
+        dishService.dishDeleteAvailability(objDish.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/getAllValidDishes" )
+    public ResponseEntity<List<DishResponse>> getAllValidDishes () {
+        List<DishResponse> dishResponseList = dishService.getAllValidDishes() ;
+        return ResponseEntity.ok().body(dishResponseList);
+    }
+
+
 }
