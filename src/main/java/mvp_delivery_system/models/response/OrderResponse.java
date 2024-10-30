@@ -19,7 +19,7 @@ public class OrderResponse {
     private Long orderId;
     private LocalDateTime dataHora;
     private OrderStatus orderStatus;
-    private Long userId;
+    private UserResponse userResponse;
     private List<Long> orderItemsId;
     private Double totalPrice;
     private Pagamentos pagamento;
@@ -27,7 +27,7 @@ public class OrderResponse {
     public OrderResponse(Order order) {
         this.orderId = order.getId();
         this.dataHora = order.getDataHora();
-        this.userId = order.getClient().getId();
+        this.userResponse = new UserResponse(order.getClient());
         this.totalPrice = order.getTotalPrice();
         this.orderStatus = order.getOrderstatus();
         this.orderItemsId = order.getOrderItems().stream().map(OrderItem::getId).toList();
