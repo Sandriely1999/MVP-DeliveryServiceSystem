@@ -63,8 +63,6 @@ public class OrderService {
 
 
 
-
-
     public Order createNewOrder(NewOrderRequest newOrderRequest) {
 
         Order order = new Order();

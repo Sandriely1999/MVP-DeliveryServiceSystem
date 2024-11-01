@@ -16,13 +16,13 @@ public class OrderItemResponse {
     private Long idOrdemItem;
     private Integer quantity;
     private DishResponse dishResponse;
-    private OrderResponse orderResponse;
+
 
     public OrderItemResponse(OrderItem orderItem) {
         this.idOrdemItem = orderItem.getId();
         this.quantity = orderItem.getQuantity();
         this.dishResponse = new DishResponse(orderItem.getDish());
-        this.orderResponse = new OrderResponse(orderItem.getOrder());
+
     }
 
     public static List<OrderItemResponse> listOrderItemParaListResponse (List<OrderItem> listOrderItem) {
