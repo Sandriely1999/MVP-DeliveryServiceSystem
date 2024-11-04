@@ -65,7 +65,7 @@ public class OrderItemService {
     }
 
     public double calculateTotalPrice(List<OrderItem> items) {
-        double total = 0.0;
+        double total = 15.0;
         for (OrderItem item : items) {
             total += item.getDish().getPrice() * item.getQuantity();
         }

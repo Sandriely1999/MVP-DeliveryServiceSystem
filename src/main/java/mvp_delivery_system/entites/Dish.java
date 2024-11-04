@@ -17,6 +17,8 @@ public class Dish {
     private String name;
     private String description;
     private Double price;
+    @Lob
+    @Column(columnDefinition = "longtext")
     private String image;
     private Boolean availability;
 
