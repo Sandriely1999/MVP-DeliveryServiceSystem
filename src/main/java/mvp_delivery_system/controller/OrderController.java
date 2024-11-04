@@ -97,5 +97,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderResponses);
     }
 
+    @GetMapping(value = "/listaPedidosEnviando")
+    public ResponseEntity<List<OrderResponse>> listaPedidosEnviando() {
+        List<OrderResponse> orderResponses = orderService.listaPedidoPorStatus(OrderStatus.ENVIANDO);
+        return ResponseEntity.ok().body(orderResponses);
+    }
+
 
 }
